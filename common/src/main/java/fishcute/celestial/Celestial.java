@@ -1,10 +1,12 @@
 package fishcute.celestial;
 
-public class Celestial
-{
-	public static final String MOD_ID = "celestial";
+import fishcute.celestialmain.util.Util;
 
-	public static void init() {
-		
-	}
+public class Celestial {
+    public static final String MOD_ID = "celestial";
+
+    public static void init() {
+        Util.log("Initializing Celestial");
+        VInstances.setInstances();
+    }
 }
