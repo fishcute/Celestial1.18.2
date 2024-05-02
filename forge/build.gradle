@@ -42,9 +42,10 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) {transitive false}
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {transitive = false}
 
-    shadowCommon "org.jetbrains.kotlin:${rootProject.kotlin}" //TODO: Use Kotlin for Forge instead
     shadowCommon project(":CelestialExpressions")
-    shadowCommon(implementation(project(":CelestialMain")))
+    common(shadowCommon(implementation(project(":CelestialMain"))))
+
+    modImplementation 'thedarkcolour:kotlinforforge:4.10.0'
 }
 
 processResources {

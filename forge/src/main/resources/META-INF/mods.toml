@@ -19,9 +19,16 @@ mandatory=true
 versionRange="[40,)"
 ordering="NONE"
 side="BOTH"
+
 [[dependencies.celestial]]
-modId="minecraft"
+   modId="minecraft"
+   mandatory=true
+   versionRange="[1.18.2,1.19)"
+   ordering="NONE"
+   side="BOTH"
+
+[[dependencies.celestial]]
+modId="kotlinforforge"
+versionRange="[4.10.0,)"
 mandatory=true
-versionRange="[1.18.2,1.19)"
-ordering="NONE"
-side="BOTH"
+ordering="BEFORE"
