@@ -29,6 +29,6 @@ side="BOTH"
 
 [[dependencies.celestial]]
 modId="kotlinforforge"
-versionRange="[4.10.0,)"
+versionRange="[3.12.0,)"
 mandatory=true
 ordering="BEFORE"
