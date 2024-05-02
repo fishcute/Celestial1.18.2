@@ -1,15 +1,23 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
-loom {
-    forge {
-        mixinConfig "celestial-common.mixins.json"
-        mixinConfig "celestial.mixins.json"
-    }
-}
+
+apply plugin: "org.jetbrains.kotlin.jvm"
+
 architectury {
     platformSetupLoomIde()
     forge()
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    forge {
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
+        mixinConfig "celestial.mixins.json"
+    }
 }
 
 configurations {
@@ -20,13 +28,19 @@ configurations {
     developmentForge.extendsFrom common
 }
 
+repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
+}
+
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    common(project(path: ":common", configuration: "namedElements")) {transitive false}
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {transitive = false}
 
     shadowCommon "org.jetbrains.kotlin:${rootProject.kotlin}" //TODO: Use Kotlin for Forge instead
     shadowCommon project(":CelestialExpressions")
@@ -49,13 +63,8 @@ shadowJar {
 }
 
 remapJar {
-    inputFile.set(shadowJar.archiveFile)
+    input.set shadowJar.archiveFile
     dependsOn shadowJar
-    archiveClassifier.set(null)
-}
-
-jar {
-    archiveClassifier.set("dev")
 }
 
 sourcesJar {
@@ -73,7 +82,7 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = "celestial_" + rootProject.display_version + "_forge-" + rootProject.mod_version
             from components.java
         }
     }
@@ -81,5 +90,16 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "${rootProject.kotlin_jvm_target}"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "${rootProject.kotlin_jvm_target}"
     }
 }
