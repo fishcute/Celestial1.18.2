@@ -114,6 +114,14 @@ public class VMinecraftInstance implements IMinecraftInstance {
     public float getViewYRot() {
         return minecraft.player.getViewYRot(getTickDelta());
     }
+
+    @Override
+    public float getCameraLookVectorTwilight(float h, float rotate) {
+        Vector3f v = minecraft.gameRenderer.getMainCamera().getLookVector();
+        v.transform(Vector3f.YP.rotation(rotate * 0.0174533F));
+        return v.dot(new Vector3f(h, 0.0F, 0.0F));
+    }
+
     public float getCameraLookVectorTwilight(float h) {
         return minecraft.gameRenderer.getMainCamera().getLookVector().dot(new Vector3f(h, 0.0F, 0.0F));
     }
