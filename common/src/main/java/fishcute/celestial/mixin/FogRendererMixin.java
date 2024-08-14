@@ -35,7 +35,7 @@ public class FogRendererMixin {
 
     @Inject(method = "setupColor", at = @At("RETURN"))
     private static void setupColor(Camera camera, float f, ClientLevel clientLevel, int i, float g, CallbackInfo ci) {
-        float[] color = VersionSky.setupFogColor(f);
+        float[] color = VersionSky.setupFogColor();
         if (color == null) return;
         fogRed = color[0];
         fogGreen = color[1];
