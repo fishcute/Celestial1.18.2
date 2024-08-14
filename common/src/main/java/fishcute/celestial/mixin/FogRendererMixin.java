@@ -1,5 +1,6 @@
 package fishcute.celestial.mixin;
 
+import fishcute.celestialmain.version.independent.Instances;
 import fishcute.celestialmain.version.independent.VersionSky;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -36,9 +37,18 @@ public class FogRendererMixin {
     @Inject(method = "setupColor", at = @At("RETURN"))
     private static void setupColor(Camera camera, float f, ClientLevel clientLevel, int i, float g, CallbackInfo ci) {
         float[] color = VersionSky.setupFogColor();
-        if (color == null) return;
+
+        if (color != null) {
+            fogRed = color[0];
+            fogGreen = color[1];
+            fogBlue = color[2];
+        }
+
+        color = VersionSky.applyPostFogChanges(fogRed, fogGreen, fogBlue);
         fogRed = color[0];
         fogGreen = color[1];
         fogBlue = color[2];
+
+        Instances.renderSystem.clearColor(fogRed, fogGreen, fogBlue, 0.0F);
     }
 }
